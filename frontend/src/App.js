@@ -12,6 +12,7 @@ function App() {
 
       <Routes>
         <Route path="/signup" element={ <Signup/>}/>
+        {/* <Route path="/*" element={<h1>Not Found</h1>} /> */}
      
       </Routes>
     </div>
