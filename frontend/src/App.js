@@ -1,4 +1,5 @@
 import Signup from './components/signup';
+import Login from './components/login';
 import './App.css';
 // import "./styles/index.css";
 
@@ -12,6 +13,7 @@ function App() {
 
       <Routes>
         <Route path="/signup" element={ <Signup/>}/>
+        <Route path="/login" element={ <Login/>}/>
         {/* <Route path="/*" element={<h1>Not Found</h1>} /> */}
      
       </Routes>

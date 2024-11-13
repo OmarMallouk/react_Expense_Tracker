@@ -17,7 +17,7 @@ const Signup =() =>{
                 password: password
             });
             if (response.data.success){
-                window.location.href = 'http://localhost/reactExpenseTracker/backend/php/create_user.php';
+                window.location.href = 'http://localhost/reactExpenseTracker/frontend/src/components/login.jsx';
 
             }else{
                 setErrorMessage(response.data.error);

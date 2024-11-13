@@ -11,7 +11,7 @@ const Login = () =>{
         event.preventDefault();
 
         try{
-            const response = axios.post('http://localhost/reactExpenseTracker/backend/php/login.php',{
+            const response = await axios.post('http://localhost/reactExpenseTracker/backend/php/login.php',{
                 username: username,
                 password: password
 
@@ -36,8 +36,8 @@ const Login = () =>{
 
 <div className="login-container">
     <h2>Login</h2>
-    <form id="loginForm" onClick={handleLogin}>
-        <div class="form-group">
+    <form id="loginForm" onSubmit={handleLogin}>
+        <div className="form-group">
             <label htmlFor="username">Username</label>
             <input type="text" id="username" name="username" value={username}
             onChange={(e) => setUsername(e.target.value)} required/>
@@ -47,7 +47,7 @@ const Login = () =>{
             <input type="password" id="password" name="password" value={password}
             onChange={(e)=> setPassword(e.target.value)} required/>
         </div>
-        <button type="submit" class="btn">Login</button>
+        <button type="submit" className="btn">Login</button>
         <a href="http://localhost/ExpenseTracker/index.html">signup?</a>
         {errorMessage && <div id="errorMessage" className="error-message">{errorMessage}</div>}
     </form>
@@ -55,3 +55,5 @@ const Login = () =>{
 
     );
 }
+
+export default Login
