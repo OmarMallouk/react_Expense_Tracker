@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "../styles/transactions.css"
+import "../styles/utilities.css"
+import "../styles/signup.css"
 
 const TransactionForm = () => {
     const [transactions, setTransactions] = useState([]);
@@ -12,7 +15,7 @@ const TransactionForm = () => {
     useEffect(() => {
         // Fetch transactions on component mount
         if (userId) {
-            axios.get(`http://localhost/ExpenseTracker/php/amount_get.php?user_id=${userId}`)
+            axios.get(`http://localhost/reactExpenseTracker/backend/php/amount_get.php?user_id=${userId}`)
                 .then(response => {
                     if (response.data && response.data.success && Array.isArray(response.data.transactions)) {
                         setTransactions(response.data.transactions);
@@ -24,7 +27,6 @@ const TransactionForm = () => {
         }
     }, [userId]);
 
-    // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
         const amount = parseFloat(transactionAmount);
@@ -39,12 +41,12 @@ const TransactionForm = () => {
             date: new Date().toISOString()
         };
 
-        axios.post('http://localhost/ExpenseTracker/php/transaction_add.php', transaction)
+        axios.post('http://localhost/reactExpenseTracker/backend/php/transaction_add.php', transaction)
             .then(response => {
                 if (response.data.success) {
                     console.log('Transaction saved to the database!');
-                    transaction.transaction_id = response.data.transaction_id; // Ensure this ID is returned from the backend
-                    setTransactions([...transactions, transaction]); // Add the transaction to state
+                    transaction.transaction_id = response.data.transaction_id; // Ensure this ID is returned from backend
+                    setTransactions([...transactions, transaction]); // Add transaction to state
                     resetForm();
                 } else {
                     console.error('Error saving transaction to database:', response.data.error);
@@ -62,7 +64,7 @@ const TransactionForm = () => {
     // Handle delete transaction
     const deleteTransaction = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost/ExpenseTracker/php/delete_transaction.php?id=${id}`);
+            const response = await axios.delete(`http://localhost/reactExpenseTracker/backend/php/delete_transaction.php?id=${id}`);
             if (response.data.success) {
                 setTransactions(transactions.filter(transaction => transaction.transaction_id !== id)); // Remove from state
                 console.log('Transaction deleted successfully');
@@ -93,7 +95,6 @@ const TransactionForm = () => {
         setBudget(currentBudget);
 
         const balance = currentBudget + incomes - expenses;
-        // Update the UI or state for balance, income, and expense here if needed
     };
 
     useEffect(() => {
@@ -103,10 +104,10 @@ const TransactionForm = () => {
     return (
         <div>
             <h2>Transaction Form</h2>
-            <form onSubmit={handleSubmit} id="transactionForm">
+            <form onSubmit={handleSubmit} id="transactionForm" className="form">
                 <div>
                     <label htmlFor="transactionType">Transaction Type:</label>
-                    <select
+                    <select className="selection"
                         id="transactionType"
                         value={transactionType}
                         onChange={(e) => setTransactionType(e.target.value)}
@@ -118,7 +119,7 @@ const TransactionForm = () => {
 
                 <div>
                     <label htmlFor="transactionAmount">Amount:</label>
-                    <input
+                    <input className="describe"
                         type="number"
                         id="transactionAmount"
                         value={transactionAmount}
@@ -128,7 +129,7 @@ const TransactionForm = () => {
 
                 <div>
                     <label htmlFor="transactionDescription">Description:</label>
-                    <input
+                    <input className="addTrans"
                         type="text"
                         id="transactionDescription"
                         value={transactionDescription}
@@ -141,7 +142,7 @@ const TransactionForm = () => {
 
             <h3>Transaction List</h3>
             <table id="transaction-list">
-                <thead>
+                <thead className="table">
                     <tr>
                         <th>Username</th>
                         <th>Description</th>
@@ -150,7 +151,7 @@ const TransactionForm = () => {
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="transaction-list">
                     {transactions.map((transaction) => (
                         <tr key={transaction.transaction_id}>
                             <td>{transaction.username}</td>

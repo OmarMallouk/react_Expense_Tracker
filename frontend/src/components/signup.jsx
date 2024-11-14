@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/signup.css"
+import { useNavigate } from 'react-router-dom';
 
 const Signup =() =>{
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -17,7 +19,7 @@ const Signup =() =>{
                 password: password
             });
             if (response.data.success){
-                window.location.href = 'http://localhost/reactExpenseTracker/frontend/src/components/login.jsx';
+                navigate('/login');
 
             }else{
                 setErrorMessage(response.data.error);
@@ -27,6 +29,12 @@ const Signup =() =>{
             setErrorMessage('An error occurred. Please try again.')
         }
     };
+
+    const goToLogin = () => {
+        navigate('/login'); 
+    };
+    
+
     return (
         <div className="signup-container">
         <h2>Signup</h2>
@@ -42,9 +50,10 @@ const Signup =() =>{
                 onChange={(e) => setPassword(e.target.value)} required/>
             </div>
             <button type="submit" className="btn">Signup</button>
-            <a href="http://localhost/ExpenseTracker/pages/login.html">login?</a>
+            {/* <a href="http://localhost/reactExpenseTracker/frontend/src/components/login.jsx">login?</a> */}
             {errorMessage && <div id="errorMessage" className="error-message">{errorMessage}</div>}
         </form>
+        <button onClick={goToLogin}>login?</button>
     </div>
     
     );

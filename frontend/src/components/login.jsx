@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/signup.css"
+import { useNavigate } from 'react-router-dom';
 
 const Login = () =>{
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -19,7 +21,7 @@ const Login = () =>{
          if (response.data.success){
             localStorage.setItem('user_id', response.data.user_id);
             console.log('User logged in, user_id saved to localStorage');
-            window.location.href= 'http://localhost/reactExpenseTracker/backend/php/create_user.php';
+            navigate('/transactionForm');
          
         }else{
             setErrorMessage(response.data.error);
@@ -30,6 +32,9 @@ const Login = () =>{
         }
     };
 
+    const goToSignup = () => {
+        navigate('/signup'); 
+    };
     
 
     return (
@@ -48,9 +53,10 @@ const Login = () =>{
             onChange={(e)=> setPassword(e.target.value)} required/>
         </div>
         <button type="submit" className="btn">Login</button>
-        <a href="http://localhost/ExpenseTracker/index.html">signup?</a>
+        {/* <a href="http://localhost/reactExpenseTracker/frontend/src/components/signup.jsx">signup?</a> */}
         {errorMessage && <div id="errorMessage" className="error-message">{errorMessage}</div>}
     </form>
+    <button onClick={goToSignup}>signup?</button>
 </div>
 
     );
