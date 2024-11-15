@@ -19,7 +19,7 @@ const Signup =() =>{
                 password: password
             });
             if (response.data.success){
-                navigate('/login');
+                navigate('/');
 
             }else{
                 setErrorMessage(response.data.error);
@@ -31,7 +31,7 @@ const Signup =() =>{
     };
 
     const goToLogin = () => {
-        navigate('/login'); 
+        navigate('/'); 
     };
     
 

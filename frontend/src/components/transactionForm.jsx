@@ -29,6 +29,19 @@ const TransactionForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (!transactionType) {
+            console.error("Transaction type is required.");
+            return;
+        }
+        if (!transactionAmount || isNaN(transactionAmount) || parseFloat(transactionAmount) <= 0) {
+            console.error("A valid transaction amount is required.");
+            return;
+        }
+        if (!userId) {
+            console.error("User ID is missing.");
+            return;
+        }
         const amount = parseFloat(transactionAmount);
         const description = transactionDescription;
         const type = transactionType;
@@ -38,7 +51,6 @@ const TransactionForm = () => {
             type: type,
             amount: amount,
             description: description,
-            date: new Date().toISOString()
         };
 
         axios.post('http://localhost/reactExpenseTracker/backend/php/transaction_add.php', transaction)
@@ -61,45 +73,7 @@ const TransactionForm = () => {
         setTransactionType('');
     };
 
-    // Handle delete transaction
-    const deleteTransaction = async (id) => {
-        try {
-            const response = await axios.delete(`http://localhost/reactExpenseTracker/backend/php/delete_transaction.php?id=${id}`);
-            if (response.data.success) {
-                setTransactions(transactions.filter(transaction => transaction.transaction_id !== id)); // Remove from state
-                console.log('Transaction deleted successfully');
-            } else {
-                console.error('Error deleting transaction:', response.data.error);
-            }
-        } catch (error) {
-            console.error('Error with delete request:', error);
-        }
-    };
-
-    // Update summary
-    const summaryUpdate = () => {
-        let incomes = 0;
-        let expenses = 0;
-
-        transactions.forEach(transaction => {
-            const amount = parseFloat(transaction.amount);
-            if (transaction.type === 'income') {
-                incomes += !isNaN(amount) ? amount : 0;
-            } else if (transaction.type === 'expense') {
-                expenses += !isNaN(amount) ? amount : 0;
-            }
-        });
-
-        const budgetTransaction = transactions.find(transaction => transaction.type === 'budget');
-        const currentBudget = budgetTransaction ? parseFloat(budgetTransaction.amount) : 0;
-        setBudget(currentBudget);
-
-        const balance = currentBudget + incomes - expenses;
-    };
-
-    useEffect(() => {
-        summaryUpdate(); // Update summary whenever transactions change
-    }, [transactions]);
+   
 
     return (
         <div>
@@ -112,6 +86,7 @@ const TransactionForm = () => {
                         value={transactionType}
                         onChange={(e) => setTransactionType(e.target.value)}
                     >
+                        <option value="">Select type</option>
                         <option value="income">Income</option>
                         <option value="expense">Expense</option>
                     </select>
@@ -158,11 +133,11 @@ const TransactionForm = () => {
                             <td>{transaction.description}</td>
                             <td>{transaction.type}</td>
                             <td>${transaction.amount}</td>
-                            <td>
+                            {/* <td>
                                 <button onClick={() => deleteTransaction(transaction.transaction_id)}>
                                     Delete
                                 </button>
-                            </td>
+                            </td> */}
                         </tr>
                     ))}
                 </tbody>
