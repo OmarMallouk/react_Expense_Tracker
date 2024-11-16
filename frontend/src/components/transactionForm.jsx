@@ -4,6 +4,7 @@ import "../styles/transactions.css"
 import "../styles/utilities.css"
 import "../styles/signup.css"
 
+import Navbar from './navbar';
 const TransactionForm = () => {
     const [transactions, setTransactions] = useState([]);
     const [budget, setBudget] = useState(0);
@@ -76,7 +77,9 @@ const TransactionForm = () => {
    
 
     return (
+      
         <div>
+              <Navbar/>
             <h2>Transaction Form</h2>
             <form onSubmit={handleSubmit} id="transactionForm" className="form">
                 <div>
